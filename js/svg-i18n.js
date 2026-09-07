@@ -8,6 +8,26 @@
     'MMF B': { en: 'MMF B', ko: 'MMF B' },
     'BIRM A': { en: 'BIRM A', ko: 'BIRM A' },
     'BIRM B': { en: 'BIRM B', ko: 'BIRM B' },
+    'Multi-Media Filtration Tank': {
+      en: 'Multi-Media Filtration Tank',
+      ko: '전처리탱크',
+    },
+    'Iron & Manganese Removal Filter': {
+      en: 'Iron & Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
+    'Iron &amp; Manganese Removal Filter': {
+      en: 'Iron & Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
+    '전처리탱크': {
+      en: 'Multi-Media Filtration Tank',
+      ko: '전처리탱크',
+    },
+    '철·망간 제거 탱크': {
+      en: 'Iron & Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
     'A/C FILRET A': { en: 'A/C FILRET A', ko: '활성탄필터 A' },
     'A/C FILRET B': { en: 'A/C FILRET B', ko: '활성탄필터 B' },
     'SOFTENER A': { en: 'SOFTENER A', ko: '연수기 A' },
