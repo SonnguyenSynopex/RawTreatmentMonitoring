@@ -1,0 +1,135 @@
+@keyframes animate {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes reanimate {
+    0% {
+        stroke-dashoffset: -1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+#path1966,
+#path1967,
+#path2025,
+#path2026,
+#path1968,
+#path1969,
+#path2027,
+#path2028,
+#path2029,
+#path2030,
+#path1972,
+#path1970,
+#path1973,
+#path1974,
+#path1975,
+#path1976,
+#path1977,
+#path1978,
+#path1979,
+#path1980,
+#path1992,
+#path1993,
+#path1994,
+#path1995,
+#path1996,
+#path1997,
+#path1998,
+#path1999,
+#path2000,
+#path2001,
+#path2013,
+#path2002,
+#path2024,
+#path1981,
+#path1982,
+#path1983,
+#path1984,
+#path1985,
+#path1986,
+#path1987,
+#path1988,
+#path1989,
+#path1990,
+#path1991,
+#path2014,
+#path2015,
+#path2016,
+#path2017,
+#path2018,
+#path2019,
+#path2020,
+#path2021,
+#path2022,
+#path2023,
+#path2003,
+#path2004,
+#path2005,
+#path2006,
+#path2007,
+#path2008,
+#path2009,
+#path2010,
+#path2011,
+#path2012,
+#path1
+{
+    animation: animate 200s linear infinite;
+    visibility: hidden;
+}
+
+#path2054,
+#path2042,
+#path2055,
+#path2056,
+#path2031,
+#path2032,
+#path2033,
+#path2034,
+#path2035,
+#path2036,
+#path2037,
+#path2038,
+#path2039,
+#path2040,
+#path2041,
+#path2043,
+#path2044,
+#path2045,
+#path2046,
+#path2047,
+#path2048,
+#path2049,
+#path2050,
+#path2051,
+#path2052,
+#path2053
+{
+    animation: reanimate 200s linear infinite;
+    visibility: hidden;
+}
+
+@keyframes fanRotate {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+@keyframes fanRotateY {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}

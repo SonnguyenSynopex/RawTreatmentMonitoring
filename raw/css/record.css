@@ -1,0 +1,177 @@
+/**
+ * Record Page Styles
+ * Styling for the record.html page including chart, table, and date picker
+ */
+
+.record-container {
+  width: 1920px;
+  margin: 0 auto;
+  padding: 60px 20px 20px 20px; /* Thêm 60px top để không bị header đè */
+  background-color: #ffffff;
+}
+
+/* Date Picker Section */
+.date-picker-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.date-picker-section label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.date-picker-section input[type="month"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.date-picker-section input[type="month"]:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Chart Section */
+.chart-section {
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Table Section */
+.table-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+#rawTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+#rawTable th,
+#rawTable td {
+  border: 1px solid #ddd;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+#rawTable th {
+  background-color: #2196F3; /* Light Blue */
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#rawTable th:first-child,
+#rawTable th:nth-child(2) {
+  background-color: #1976D2; /* Dark Blue */
+}
+
+#rawTable tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+#rawTable tbody tr:hover {
+  background-color: #e3f2fd; /* Light blue hover */
+}
+
+.line-label {
+  font-weight: bold;
+  background-color: #e3f2fd !important;
+  color: #1976D2; /* Dark Blue */
+  text-align: left !important;
+  padding-left: 15px !important;
+}
+
+.date-cell {
+  background-color: #f1f1f1 !important;
+  font-style: italic;
+  color: #666;
+}
+
+/* Column widths */
+#rawTable th:first-child,
+#rawTable td:first-child {
+  width: 120px;
+  min-width: 120px;
+}
+
+#rawTable th:nth-child(2),
+#rawTable td:nth-child(2) {
+  width: 80px;
+  min-width: 80px;
+}
+
+#rawTable th:not(:first-child):not(:nth-child(2)),
+#rawTable td:not(:first-child):not(:nth-child(2)) {
+  width: 55px;
+  min-width: 55px;
+}
+
+/* Input cells inside table */
+#rawTable td input.edi-cell {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  text-align: center;
+  padding: 4px 2px;
+  font-size: 12px;
+  background: transparent;
+  outline: none;
+}
+
+#rawTable td input.edi-cell:focus {
+  background: #e3f2fd;
+  border-radius: 3px;
+}
+
+/* Hide number input spinner arrows */
+#rawTable td input.edi-cell::-webkit-outer-spin-button,
+#rawTable td input.edi-cell::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#rawTable td input.edi-cell[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1920px) {
+  .record-container {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  #rawTable {
+    font-size: 12px;
+  }
+  
+  #rawTable th,
+  #rawTable td {
+    padding: 6px 4px;
+  }
+}
+

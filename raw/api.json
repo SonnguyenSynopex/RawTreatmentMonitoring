@@ -1,0 +1,209 @@
+{
+  "success": true,
+  "message": "Dữ liệu đã được làm sạch và chuẩn hóa",
+  "data": {
+    "timestamp": "2026-02-26T09:20:04.989Z",
+    "systemId": "raw-uf",
+    "tags": [
+      {
+        "tagId": "RAWUF_BW_Raw_PumpA",
+        "name": "Trạng thái chạy/dừng",
+        "value": 0,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_BW_Raw_PumpB",
+        "name": "Trạng thái chạy/dừng",
+        "value": 0,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Raw_BW_Pump",
+        "name": "Trạng thái chạy/dừng",
+        "value": 0,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Raw_Pump",
+        "name": "Trạng thái chạy/dừng",
+        "value": 1,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Raw_PumpC",
+        "name": "Trạng thái chạy/dừng",
+        "value": 1,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Waste_BW_UF",
+        "name": "Trạng thái chạy/dừng",
+        "value": 0,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_BW_UF_PumpA",
+        "name": "Trạng thái chạy/dừng",
+        "value": 0,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_BW_UF_PumpB",
+        "name": "Trạng thái chạy/dừng",
+        "value": 1,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "RAW UF",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Flow_LocTho_LineA",
+        "name": "Lưu lượng",
+        "value": 33.5,
+        "unit": "m3",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_HieuSuat_LocTho_LineA",
+        "name": "Hiệu suất",
+        "value": 47.8571434021,
+        "unit": "%",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Flow_LocTho_LineB",
+        "name": "Lưu lượng",
+        "value": 34.25,
+        "unit": "m3",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_HieuSuat_LocTho_LineB",
+        "name": "Hiệu suất",
+        "value": 48.928569793701,
+        "unit": "%",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      },
+      {
+        "tagId": "RAWUF_Pressure_input_A",
+        "name": "Áp suất",
+        "value": 0.69900000095367,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Pressure_output_A",
+        "name": "Áp suất",
+        "value": 0.18999999761581,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Hieu_suat_line_A",
+        "name": "Hiệu suất",
+        "value": 0.50900000333786,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Pressure_input_B",
+        "name": "Áp suất",
+        "value": 0.65100002288818,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Pressure_output_B",
+        "name": "Áp suất",
+        "value": 0.13249999284744,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Hieu_suat_line_B",
+        "name": "Hiệu suất",
+        "value": 0.51850003004074,
+        "unit": "bar",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_Phan_tram_be_UF",
+        "name": "Mức nước",
+        "value": 58.5,
+        "unit": "%",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:03.559Z"
+      },
+      {
+        "tagId": "RAWUF_HMI01_RAW_PUMP_A",
+        "name": "Trạng thái chạy/dừng",
+        "value": 1,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "pump",
+        "timestamp": "2026-02-26T09:20:02.593Z"
+      },
+      {
+        "tagId": "RAWUF_Muc_UF",
+        "name": "Mức nước",
+        "value": 251.55000305176,
+        "unit": "%",
+        "quality": "good",
+        "category": "sensor",
+        "timestamp": "2026-02-26T09:20:04.782Z"
+      },
+      {
+        "tagId": "RAWUF_Raw_Pump_15kW",
+        "name": "Trạng thái chạy/dừng",
+        "value": 1,
+        "unit": "chạy/dừng",
+        "quality": "good",
+        "category": "pump",
+        "timestamp": "2026-02-26T09:20:04.264Z"
+      }
+    ]
+  },
+  "count": 22
+}

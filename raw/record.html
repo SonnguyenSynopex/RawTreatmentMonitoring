@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>RAW TREATMENT & UF WATER - Record</title>
+    <link rel="stylesheet" href="./css/styleSvg.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/record.css" />
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-populate@1.21.0/browser/xlsx-populate.min.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-container">
+            <div class="dropdown" id="mainDropdown">
+                <button class="dropbtn" id="menuBtn" onclick="toggleMenu()" aria-label="Menu">
+                    <img src="./img/menu.png" alt="Menu" />
+                </button>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <div class="menu-item" onclick="location.href='http://10.100.203.78/scada/'; closeMenu();">
+                        <img src="./img/home.png" alt="Home" />
+                        <span class="menu-label" data-lang-en="Home" data-lang-ko="홈">Home</span>
+                    </div>
+                    <div class="menu-item" onclick="location.href='index.html'; closeMenu();">
+                        <img src="./img/dashboard.png" alt="Dashboard" />
+                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="location.href='./record.html'; closeMenu();"
+                        style="background-color: #6e6e6e">
+                        <img src="./img/record.png" alt="Record" />
+                        <span class="menu-label" data-lang-en="Record" data-lang-ko="기록">Record</span>
+                    </div>
+                    <div class="menu-item"
+                        onclick="location.href='http://10.100.203.78/scada/alarmhistory/'; closeMenu();">
+                        <img src="./img/alarm.png" alt="Alarm History" />
+                        <span class="menu-label" data-lang-en="Alarm History" data-lang-ko="알람 기록">Alarm History</span>
+                    </div>
+                    <div class="menu-item" onclick="">
+                        <img id="settings" src="./img/setting.png" alt="Settings" />
+                        <span class="menu-label" data-lang-en="Settings" data-lang-ko="설정">Settings</span>
+                    </div>
+                    <div class="menu-item language-toggle" onclick="toggleLanguage();">
+                        <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
+                        <span class="menu-label" id="languageLabel" data-lang-en="English"
+                            data-lang-ko="한국어">English</span>
+                    </div>
+                </div>
+            </div>
+            <div class="LOGO" onclick="location.href='http://10.100.203.78/scada/';">
+                SYNOPEX
+            </div>
+            <div class="titlebox">RAW TREATMENT & UF WATER WEB SYSTEM</div>
+            <div class="right-section">
+                <span id="myTime">00:00:00 00/00/0000</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Overlay trong suốt để đóng menu dropdown khi click ra ngoài -->
+        <div id="menuOverlay" class="menu-overlay"></div>
+
+        <!-- Record Page Content -->
+        <div class="record-container">
+            <!-- Date Picker -->
+            <div class="date-picker-section">
+                <label for="datePicker">Select Month:</label>
+                <input type="month" id="datePicker" />
+            </div>
+
+            <!-- RAW Chart -->
+            <div class="chart-section">
+                <canvas id="rawChart" width="1880" height="600"></canvas>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-section">
+                <table id="rawTable">
+                    <thead>
+                        <tr>
+                            <th>LINE</th>
+                            <th>DATE</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                            <th>11</th>
+                            <th>12</th>
+                            <th>13</th>
+                            <th>14</th>
+                            <th>15</th>
+                            <th>16</th>
+                            <th>17</th>
+                            <th>18</th>
+                            <th>19</th>
+                            <th>20</th>
+                            <th>21</th>
+                            <th>22</th>
+                            <th>23</th>
+                            <th>24</th>
+                            <th>25</th>
+                            <th>26</th>
+                            <th>27</th>
+                            <th>28</th>
+                            <th>29</th>
+                            <th>30</th>
+                            <th>31</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="rawARow">
+                            <td class="line-label">LINE A (m3)</td>
+                            <td class="date-cell" id="rawADate">-</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr id="rawBRow">
+                            <td class="line-label">LINE B (m3)</td>
+                            <td class="date-cell" id="rawBDate">-</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr id="rawTotalRow">
+                            <td class="line-label">Total (m3)</td>
+                            <td class="date-cell" id="rawTotalDate">-</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="text-align: right; margin-top: 10px; display: flex; justify-content: flex-end; gap: 10px;">
+              <button id="btnSaveRecord" style="
+                padding: 10px 20px; font-size: 14px; font-weight: bold;
+                background: #4CAF50; color: #fff; border: none; border-radius: 8px;
+                cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+              " onclick="onSaveRecord()">💾 Save</button>
+              
+              <button id="btnClearRecord" style="
+                padding: 10px 20px; font-size: 14px; font-weight: bold;
+                background: #f44336; color: #fff; border: none; border-radius: 8px;
+                cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+              " onclick="onClearRecord()">🗑️ Clear</button>
+
+              <button onclick="exportToExcel()" style="
+                padding: 10px 20px; font-size: 14px; font-weight: bold;
+                background: #2196F3; color: #fff; border: none; border-radius: 8px;
+                cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                transition: background .2s, transform .1s;
+              " onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'"
+              >📥 Export Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-container">
+            <div class="status-indicator">
+                <span class="status-label" id="statusLabel" data-lang-en="System status: "
+                    data-lang-ko="시스템 상태: ">System status:
+                </span>
+                <div class="status-light" id="status-light"></div>
+            </div>
+            <div class="scrolling-text" style="cursor: pointer"
+                onclick="location.href='http://10.100.203.78/scada/alarmhistory';">
+                <span id="alarmText">System is normal</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/scolling.js" type="text/javascript"></script>
+    <script src="./js/time.js" type="text/javascript"></script>
+    <script src="./js/record.js" type="text/javascript"></script>
+</body>
+
+</html>
