@@ -172,6 +172,9 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: { top: 24 },
+      },
       plugins: {
         legend: {
           display: true,
@@ -182,6 +185,19 @@ function initChart() {
           text: 'RAW TREATMENT WATER CHART (m3)',
           font: { size: 16 },
         },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          offset: 0,
+          clamp: true,
+          font: { size: 9, weight: 'bold' },
+          color: '#333',
+          formatter: (value) => {
+            const n = Number(value);
+            if (!Number.isFinite(n) || n === 0) return '';
+            return Number.isInteger(n) ? String(n) : n.toFixed(1);
+          },
+        },
       },
       scales: {
         x: {
@@ -189,6 +205,7 @@ function initChart() {
         },
         y: {
           beginAtZero: true,
+          grace: '10%',
         },
       },
     },

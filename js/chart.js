@@ -67,9 +67,25 @@ function initRawChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: { top: 18 },
+      },
       plugins: {
         legend: { display: false },
         title: { display: false },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          offset: 0,
+          clamp: true,
+          font: { size: 8, weight: 'bold' },
+          color: '#333',
+          formatter: (value) => {
+            const n = Number(value);
+            if (!Number.isFinite(n) || n === 0) return '';
+            return Number.isInteger(n) ? String(n) : n.toFixed(1);
+          },
+        },
       },
       scales: {
         x: {
@@ -78,6 +94,7 @@ function initRawChart() {
         },
         y: {
           beginAtZero: true,
+          grace: '10%',
           ticks: { font: { size: 10 } },
         },
       },
