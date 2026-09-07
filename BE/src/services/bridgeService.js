@@ -123,12 +123,12 @@ export class BridgeService {
     const payload = {
       year: hist.year,
       month: hist.month,
-      lineA: hist.lineA,
-      lineB: hist.lineB,
+      RAWUF_LocThoA: hist.RAWUF_LocThoA,
+      RAWUF_LocThoB: hist.RAWUF_LocThoB,
       ts,
     };
 
-    const hash = JSON.stringify([payload.lineA, payload.lineB]);
+    const hash = JSON.stringify([payload.RAWUF_LocThoA, payload.RAWUF_LocThoB]);
     await this.publisher.publishHistory(payload);
 
     if (hash !== this.lastHistoryHash) {

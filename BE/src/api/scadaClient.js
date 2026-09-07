@@ -64,46 +64,49 @@ export async function fetchRealtimeTags() {
 }
 
 /**
- * Normalize history API into { lineA: number[31], lineB: number[31] }
+ * Normalize history API into { RAWUF_LocThoA, RAWUF_LocThoB } number[31]
+ * Contract from raw chart.js / record.js
  */
 export function normalizeHistory(body, year, month) {
   const empty = () => Array(31).fill(0);
 
-  let lineA = empty();
-  let lineB = empty();
+  let locThoA = empty();
+  let locThoB = empty();
 
   if (!body || typeof body !== 'object') {
-    return { year, month, lineA, lineB };
+    return { year, month, RAWUF_LocThoA: locThoA, RAWUF_LocThoB: locThoB };
   }
 
   const data = body.data ?? body;
 
-  if (Array.isArray(data?.lineA) || Array.isArray(data?.LINE_A)) {
-    lineA = pad31(data.lineA ?? data.LINE_A);
-    lineB = pad31(data.lineB ?? data.LINE_B ?? empty());
-    return { year, month, lineA, lineB };
+  if (
+    Array.isArray(data.RAWUF_LocThoA) ||
+    Array.isArray(data.RAWUF_LocThoB) ||
+    Array.isArray(body.RAWUF_LocThoA)
+  ) {
+    locThoA = pad31(data.RAWUF_LocThoA ?? body.RAWUF_LocThoA);
+    locThoB = pad31(data.RAWUF_LocThoB ?? body.RAWUF_LocThoB);
+    return { year, month, RAWUF_LocThoA: locThoA, RAWUF_LocThoB: locThoB };
   }
 
-  // Possible shapes: { lineA: { day1: n, ... } } or arrays of { day, value }
-  if (data?.lineA || data?.['LINE A'] || data?.LineA) {
-    lineA = coerceSeries(data.lineA ?? data['LINE A'] ?? data.LineA);
-    lineB = coerceSeries(data.lineB ?? data['LINE B'] ?? data.LineB);
-    return { year, month, lineA, lineB };
+  if (Array.isArray(data.lineA) || Array.isArray(data.LINE_A)) {
+    locThoA = pad31(data.lineA ?? data.LINE_A);
+    locThoB = pad31(data.lineB ?? data.LINE_B ?? empty());
+    return { year, month, RAWUF_LocThoA: locThoA, RAWUF_LocThoB: locThoB };
   }
 
-  // Array of daily records: [{ day, lineA, lineB }, ...]
   if (Array.isArray(data)) {
     for (const row of data) {
       const day = Number(row.day ?? row.Day ?? row.date ?? row.Date);
       if (!Number.isInteger(day) || day < 1 || day > 31) continue;
-      const a = Number(row.lineA ?? row.LINE_A ?? row.A ?? 0);
-      const b = Number(row.lineB ?? row.LINE_B ?? row.B ?? 0);
-      lineA[day - 1] = Number.isFinite(a) ? a : 0;
-      lineB[day - 1] = Number.isFinite(b) ? b : 0;
+      const a = Number(row.RAWUF_LocThoA ?? row.lineA ?? row.A ?? 0);
+      const b = Number(row.RAWUF_LocThoB ?? row.lineB ?? row.B ?? 0);
+      locThoA[day - 1] = Number.isFinite(a) ? a : 0;
+      locThoB[day - 1] = Number.isFinite(b) ? b : 0;
     }
   }
 
-  return { year, month, lineA, lineB };
+  return { year, month, RAWUF_LocThoA: locThoA, RAWUF_LocThoB: locThoB };
 }
 
 function pad31(arr) {
@@ -114,19 +117,6 @@ function pad31(arr) {
     out[i] = Number.isFinite(n) ? n : 0;
   }
   return out;
-}
-
-function coerceSeries(src) {
-  if (Array.isArray(src)) return pad31(src);
-  if (src && typeof src === 'object') {
-    const out = Array(31).fill(0);
-    for (let d = 1; d <= 31; d++) {
-      const n = Number(src[d] ?? src[`day${d}`] ?? src[`Day${d}`] ?? 0);
-      out[d - 1] = Number.isFinite(n) ? n : 0;
-    }
-    return out;
-  }
-  return Array(31).fill(0);
 }
 
 export async function fetchHistory(month, year) {

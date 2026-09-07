@@ -95,14 +95,14 @@ export class MqttPublisher {
     });
   }
 
-  async publishHistory({ year, month, lineA, lineB, ts }) {
+  async publishHistory({ year, month, RAWUF_LocThoA, RAWUF_LocThoB, ts }) {
     await this.publish(topicHistory(year, month), {
       systemId: SYSTEM_ID,
       year,
       month,
       unit: 'm3',
-      lineA,
-      lineB,
+      RAWUF_LocThoA,
+      RAWUF_LocThoB,
       ts,
     });
   }

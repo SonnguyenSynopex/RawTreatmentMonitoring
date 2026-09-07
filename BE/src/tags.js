@@ -3,19 +3,20 @@
  */
 export const SYSTEM_ID = 'raw-uf';
 
+/** Units aligned with raw/api.json sample */
 export const FLOAT_TAGS = [
   { tagId: 'RAWUF_Phan_tram_be_UF', unit: '%' },
   { tagId: 'RAWUF_Muc_UF', unit: 'm3' },
   { tagId: 'RAWUF_Pressure_input_A', unit: 'bar' },
   { tagId: 'RAWUF_Pressure_output_A', unit: 'bar' },
-  { tagId: 'RAWUF_Hieu_suat_line_A', unit: null },
+  { tagId: 'RAWUF_Hieu_suat_line_A', unit: 'bar' },
   { tagId: 'RAWUF_Pressure_input_B', unit: 'bar' },
   { tagId: 'RAWUF_Pressure_output_B', unit: 'bar' },
-  { tagId: 'RAWUF_Hieu_suat_line_B', unit: null },
-  { tagId: 'RAWUF_Flow_LocTho_LineA', unit: 'm3/h' },
-  { tagId: 'RAWUF_HieuSuat_LocTho_LineA', unit: null },
-  { tagId: 'RAWUF_Flow_LocTho_LineB', unit: 'm3/h' },
-  { tagId: 'RAWUF_HieuSuat_LocTho_LineB', unit: null },
+  { tagId: 'RAWUF_Hieu_suat_line_B', unit: 'bar' },
+  { tagId: 'RAWUF_Flow_LocTho_LineA', unit: 'm3' },
+  { tagId: 'RAWUF_HieuSuat_LocTho_LineA', unit: '%' },
+  { tagId: 'RAWUF_Flow_LocTho_LineB', unit: 'm3' },
+  { tagId: 'RAWUF_HieuSuat_LocTho_LineB', unit: '%' },
 ];
 
 export const BOOL_TAGS = [

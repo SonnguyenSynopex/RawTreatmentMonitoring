@@ -4,10 +4,6 @@ setInterval(checkServerConnection, 3000);
 // Initial check
 setTimeout(checkServerConnection, 1000);
 
-// Legacy status color change (keep for backward compatibility)
-setTimeout(() => {
-  changeStatusColor("#49FE01");
-}, 3000);
 
 setTimeout(() => {
   location.reload();
@@ -242,7 +238,7 @@ function checkServerConnection() {
 
   if (!statusLight || !alarmText) return;
 
-  fetch("http://10.100.203.78:3456/api/tags/latest?systemId=WaterLevelMonitoring", {
+  fetch("http://10.100.203.78:3456/api/tags/latest?systemId=raw-uf", {
     method: 'GET',
     timeout: 5000
   })

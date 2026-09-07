@@ -1,6 +1,6 @@
 # RAW TREATMENT & UF — Tài liệu logic hiển thị & map API ↔ SVG
 
-Thư mục dự án: `raw/`.
+Thư mục dự án: **root repo** (nguồn gốc từ `raw/`, đã copy lên root để deploy Vercel).
 
 | File | Vai trò |
 |------|---------|
@@ -9,12 +9,13 @@ Thư mục dự án: `raw/`.
 | `js/index.js` | Fetch SCADA tags → cập nhật SVG (text, pump, valve, path, tank, line status) |
 | `js/chart.js` | Chart.js bar chart + bảng Dashboard (LINE A / LINE B) |
 | `js/record.js` | Fetch/Save/Clear/Export RawUF theo tháng (Chart.js riêng) |
-| `js/scolling.js`, `js/time.js` | Menu, đồng hồ, health check |
+| `js/scolling.js`, `js/time.js` | Menu, đồng hồ, health check (`systemId=raw-uf`) |
 | `svg/Raw_UF.svg` | Sơ đồ kỹ thuật (load trong iframe `#left-wapper`) |
 | `svg/Raw_UF - Copy.svg` | Bản SVG backup |
 | `api.json` | Data test local (không dùng trên production path) |
 | `css/layout.css`, `css/styleSvg.css`, `css/record.css` | Styles |
 | `template/Template.xlsx` | Template Excel export |
+| `BE/` | Bridge REST → HiveMQ MQTT (xem `MQTT_HIVEMQ_BACKEND_SPEC.md`) |
 
 ---
 

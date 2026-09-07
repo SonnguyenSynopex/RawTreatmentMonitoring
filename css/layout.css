@@ -10,7 +10,6 @@
 }
 
 body {
-  
   width: 1920px;
   height: 1080px;
   position: relative;
@@ -41,16 +40,11 @@ body {
   padding-right: 10px;
 }
 
-.dropdown-container {
-  font-size: 5px !important;
-}
-
 .dropbtn {
   background-color: transparent;
   color: white;
   font-size: 16px;
   border: none;
-  /* padding: 1px !important; */
   width: 50px !important;
   height: 50px !important;
   cursor: pointer;
@@ -71,7 +65,7 @@ body {
 }
 
 .dropdown {
-  position: relative; /* bỏ absolute */
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -123,8 +117,6 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
-  /* Để overlay nằm dưới header/dropdown (z-index header = 10)
-     nhưng vẫn nằm trên phần content để bắt sự kiện click bên ngoài menu */
   z-index: 5;
   cursor: default;
 }
@@ -163,46 +155,6 @@ body {
   flex: 1;
 }
 
-/* Legacy support for old dropdown-item class */
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
-  color: white !important;
-  transition: background-color 0.2s ease;
-  position: relative;
-  text-decoration: none;
-}
-
-.dropdown-item:hover {
-  background-color: #333333;
-  color: white !important;
-}
-
-.dropdown-item img {
-  width: 32px;
-  height: 32px;
-  margin-right: 10px;
-  flex-shrink: 0;
-  object-fit: contain;
-}
-
-.dropdown-item span {
-  font-size: 16px;
-  white-space: nowrap;
-  color: white;
-  display: block;
-  flex: 1;
-}
-
-.dropdown-content a.dropdown-item {
-  color: white !important;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
 .LOGO {
   font-size: 45px;
   font-weight: bold;
@@ -212,19 +164,7 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
   user-select: none;
-}
-
-.LOGO:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-.LOGO:active {
-  transform: scale(0.98);
-  opacity: 0.8;
 }
 
 .titlebox {
@@ -244,10 +184,6 @@ body {
   font-size: 30px;
 }
 
-.icon-setting {
-  cursor: pointer;
-}
-
 .content {
   position: absolute;
   top: 0px;
@@ -257,7 +193,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
+  background: #fff;
 }
 
 #left-wapper {
@@ -278,7 +214,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* font-size: 14px; */
   z-index: 10;
 }
 
@@ -306,11 +241,11 @@ body {
 }
 
 .status-light.connected {
-  background-color: #00ff00; /* Green when connected */
+  background-color: #00ff00;
 }
 
 .status-light.disconnected {
-  background-color: #ff0000; /* Red when disconnected */
+  background-color: #ff0000;
 }
 
 .status-label {
@@ -322,7 +257,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-align: left;
-  /* padding-left: 100px; */
 }
 
 .scrolling-text span {
@@ -337,5 +271,31 @@ body {
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+/* Stage container for SVG */
+.stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+}
+
+.stage #left-wapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  z-index: 1;
+}
+
+@keyframes fanRotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
   }
 }
