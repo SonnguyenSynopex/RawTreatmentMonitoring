@@ -26,7 +26,7 @@ export class BridgeService {
     this.running = true;
 
     console.log(
-      `[bridge] realtime=${config.realtimeIntervalMs}ms history=${config.historyIntervalMs}ms heartbeat=${config.heartbeatIntervalMs}ms`
+      `[bridge] realtime=${config.realtimeIntervalMs}ms history=${config.historyIntervalMs}ms lookback=${config.historyLookbackMonths}mo heartbeat=${config.heartbeatIntervalMs}ms`
     );
     console.log(
       `[bridge] FE topics: ${config.topicPrefix}/realtime/all | .../realtime/{tagId} | .../history/{yyyy}/{MM} | .../status/online`
@@ -130,25 +130,42 @@ export class BridgeService {
 
   async tickHistory() {
     const now = new Date();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    const hist = await fetchHistory(month, year);
-    const ts = new Date().toISOString();
+    const lookback = config.historyLookbackMonths || 12;
+    const jobs = [];
+    const labels = [];
 
-    const payload = {
-      year: hist.year,
-      month: hist.month,
-      RAWUF_LocThoA: hist.RAWUF_LocThoA,
-      RAWUF_LocThoB: hist.RAWUF_LocThoB,
-      ts,
-    };
+    for (let i = 0; i < lookback; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
+      labels.push(`${year}-${String(month).padStart(2, '0')}`);
 
-    const hash = JSON.stringify([payload.RAWUF_LocThoA, payload.RAWUF_LocThoB]);
-    await this.publisher.publishHistory(payload);
+      jobs.push(
+        (async () => {
+          const hist = await fetchHistory(month, year);
+          const ts = new Date().toISOString();
+          await this.publisher.publishHistory({
+            year: hist.year,
+            month: hist.month,
+            RAWUF_LocThoA: hist.RAWUF_LocThoA,
+            RAWUF_LocThoB: hist.RAWUF_LocThoB,
+            ts,
+          });
+          return {
+            key: `${year}-${String(month).padStart(2, '0')}`,
+            hash: JSON.stringify([hist.RAWUF_LocThoA, hist.RAWUF_LocThoB]),
+          };
+        })()
+      );
+    }
 
+    const results = await Promise.all(jobs);
+    const hash = JSON.stringify(results.map((r) => [r.key, r.hash]));
     if (hash !== this.lastHistoryHash) {
       this.lastHistoryHash = hash;
-      console.log(`[bridge] history ${year}-${String(month).padStart(2, '0')} published`);
+      console.log(
+        `[bridge] history published ${results.length} months: ${labels[labels.length - 1]} … ${labels[0]}`
+      );
     }
   }
 }

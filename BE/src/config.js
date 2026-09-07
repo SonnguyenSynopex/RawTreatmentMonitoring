@@ -33,6 +33,8 @@ export const config = {
 
   realtimeIntervalMs: int('REALTIME_INTERVAL_MS', 5000),
   historyIntervalMs: int('HISTORY_INTERVAL_MS', 60_000),
+  /** Số tháng lịch sử publish lên MQTT (retained), tính lùi từ tháng hiện tại */
+  historyLookbackMonths: Math.max(1, int('HISTORY_LOOKBACK_MONTHS', 12)),
   heartbeatIntervalMs: int('HEARTBEAT_INTERVAL_MS', 5000),
 
   mqttUrl: required('MQTT_URL'),
