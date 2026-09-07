@@ -8,6 +8,37 @@ let currentMonthData = { locThoA: new Array(31).fill(0), locThoB: new Array(31).
 let historyUnsub = null;
 let activeHistoryTopic = null;
 
+const barValueLabelsPlugin = {
+  id: 'barValueLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    chart.data.datasets.forEach((dataset, datasetIndex) => {
+      const meta = chart.getDatasetMeta(datasetIndex);
+      if (!meta || meta.hidden) return;
+
+      meta.data.forEach((element, index) => {
+        const n = Number(dataset.data[index]);
+        if (!Number.isFinite(n) || n === 0) return;
+
+        const text = Number.isInteger(n) ? String(n) : n.toFixed(1);
+        const pos = element.tooltipPosition();
+
+        ctx.save();
+        ctx.font = 'bold 10px Arial, sans-serif';
+        ctx.fillStyle = '#1a1a1a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(text, pos.x, pos.y - 2);
+        ctx.restore();
+      });
+    });
+  },
+};
+
+if (typeof Chart !== 'undefined') {
+  Chart.register(barValueLabelsPlugin);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initDatePicker();
   initTableInputs();
@@ -173,7 +204,7 @@ function initChart() {
       responsive: true,
       maintainAspectRatio: false,
       layout: {
-        padding: { top: 24 },
+        padding: { top: 28 },
       },
       plugins: {
         legend: {
@@ -185,19 +216,7 @@ function initChart() {
           text: 'RAW TREATMENT WATER CHART (m3)',
           font: { size: 16 },
         },
-        datalabels: {
-          anchor: 'end',
-          align: 'top',
-          offset: 0,
-          clamp: true,
-          font: { size: 9, weight: 'bold' },
-          color: '#333',
-          formatter: (value) => {
-            const n = Number(value);
-            if (!Number.isFinite(n) || n === 0) return '';
-            return Number.isInteger(n) ? String(n) : n.toFixed(1);
-          },
-        },
+        datalabels: { display: false },
       },
       scales: {
         x: {
@@ -205,7 +224,7 @@ function initChart() {
         },
         y: {
           beginAtZero: true,
-          grace: '10%',
+          grace: '15%',
         },
       },
     },

@@ -17,20 +17,9 @@
     <div class="header">
         <div class="header-container">
             <div class="dropdown" id="mainDropdown">
-                <button class="dropbtn" id="menuBtn" onclick="toggleMenu()" aria-label="Menu">
+                <button class="dropbtn" id="menuBtn" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false">
                     <img src="./img/menu.png" alt="Menu" />
                 </button>
-                <div class="dropdown-content" id="dropdownMenu">
-                    <div class="menu-item" onclick="location.href='index.html'; closeMenu();">
-                        <img src="./img/dashboard.png" alt="Dashboard" />
-                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
-                    </div>
-                    <div class="menu-item language-toggle" onclick="toggleLanguage();">
-                        <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
-                        <span class="menu-label" id="languageLabel" data-lang-en="English"
-                            data-lang-ko="한국어">English</span>
-                    </div>
-                </div>
             </div>
             <div class="LOGO">
                 SYNOPEX
@@ -41,6 +30,19 @@
             </div>
         </div>
     </div>
+
+    <!-- Left sidebar menu -->
+    <aside class="left-sidebar dropdown-content" id="dropdownMenu" aria-hidden="true">
+        <div class="menu-item" onclick="location.href='index.html'; closeMenu();">
+            <img src="./img/dashboard.png" alt="Dashboard" />
+            <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
+        </div>
+        <div class="menu-item language-toggle" onclick="toggleLanguage();">
+            <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
+            <span class="menu-label" id="languageLabel" data-lang-en="English"
+                data-lang-ko="한국어">English</span>
+        </div>
+    </aside>
 
     <div class="content">
         <!-- Overlay trong suốt để đóng menu dropdown khi click ra ngoài -->

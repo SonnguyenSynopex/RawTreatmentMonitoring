@@ -10,6 +10,47 @@ document.addEventListener('DOMContentLoaded', () => {
 let rawChartInstance = null;
 const RAW_API = 'http://10.100.203.78:4506/api/rawuf';
 
+/** Draw value on top of each bar (works without external datalabels package) */
+const barValueLabelsPlugin = {
+  id: 'barValueLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    chart.data.datasets.forEach((dataset, datasetIndex) => {
+      const meta = chart.getDatasetMeta(datasetIndex);
+      if (!meta || meta.hidden) return;
+
+      meta.data.forEach((element, index) => {
+        const raw = dataset.data[index];
+        const n = Number(raw);
+        if (!Number.isFinite(n) || n === 0) return;
+
+        const text = Number.isInteger(n) ? String(n) : n.toFixed(1);
+        const pos = element.tooltipPosition();
+
+        ctx.save();
+        ctx.font = 'bold 9px Arial, sans-serif';
+        ctx.fillStyle = '#1a1a1a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(text, pos.x, pos.y - 2);
+        ctx.restore();
+      });
+    });
+  },
+};
+
+if (typeof Chart !== 'undefined') {
+  Chart.register(barValueLabelsPlugin);
+  if (typeof ChartDataLabels !== 'undefined') {
+    // Prefer built-in plugin above; disable CDN plugin if both present
+    try {
+      Chart.unregister(ChartDataLabels);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+}
+
 function pad31(arr) {
   const out = new Array(31).fill(0);
   if (!Array.isArray(arr)) return out;
@@ -68,24 +109,12 @@ function initRawChart() {
       responsive: true,
       maintainAspectRatio: false,
       layout: {
-        padding: { top: 18 },
+        padding: { top: 22, bottom: 4 },
       },
       plugins: {
         legend: { display: false },
         title: { display: false },
-        datalabels: {
-          anchor: 'end',
-          align: 'top',
-          offset: 0,
-          clamp: true,
-          font: { size: 8, weight: 'bold' },
-          color: '#333',
-          formatter: (value) => {
-            const n = Number(value);
-            if (!Number.isFinite(n) || n === 0) return '';
-            return Number.isInteger(n) ? String(n) : n.toFixed(1);
-          },
-        },
+        datalabels: { display: false },
       },
       scales: {
         x: {
@@ -94,7 +123,7 @@ function initRawChart() {
         },
         y: {
           beginAtZero: true,
-          grace: '10%',
+          grace: '15%',
           ticks: { font: { size: 10 } },
         },
       },
