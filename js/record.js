@@ -193,6 +193,17 @@ function initChart() {
       },
     },
   });
+  applyRecordChartTitle(typeof currentLanguage !== 'undefined' ? currentLanguage : 'en');
+}
+
+function applyRecordChartTitle(lang) {
+  if (!rawChartInstance) return;
+  const titles = {
+    en: 'RAW TREATMENT WATER CHART (m3)',
+    ko: '원수/UF 수량 차트 (m3)',
+  };
+  rawChartInstance.options.plugins.title.text = titles[lang === 'ko' ? 'ko' : 'en'];
+  rawChartInstance.update('none');
 }
 
 function updateChart(arrA, arrB) {
@@ -235,7 +246,11 @@ async function exportToExcel() {
     document.body.removeChild(link);
   } catch (error) {
     console.error('Export Excel failed:', error);
-    alert('Có lỗi xảy ra khi tải/xử lý Template.xlsx!');
+    alert(
+      typeof currentLanguage !== 'undefined' && currentLanguage === 'ko'
+        ? 'Template.xlsx를 불러오거나 처리하는 중 오류가 발생했습니다!'
+        : 'Failed to load/process Template.xlsx!'
+    );
   }
 }
 

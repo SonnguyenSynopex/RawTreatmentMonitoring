@@ -10,8 +10,8 @@ setTimeout(() => {
 }, 3600000);
 
 
-// Language management — default Korean
-let currentLanguage = 'ko';
+// Language management — default English
+let currentLanguage = 'en';
 let menuTimeout = null;
 
 // Hàm toggle dropdown menu chính
@@ -247,6 +247,24 @@ function applyLanguage(lang) {
   // SVG labels inside dashboard iframe
   if (window.SvgI18n) {
     window.SvgI18n.applySvgLanguage(lang);
+  }
+
+  if (typeof applyRecordChartTitle === 'function') {
+    applyRecordChartTitle(lang);
+  }
+
+  // Export / Save / Clear button labels on record page
+  const btnSave = document.getElementById('btnSaveRecord') || document.getElementById('btnSaveRaw');
+  const btnClear = document.getElementById('btnClearRecord') || document.getElementById('btnClearRaw');
+  const btnExport = document.getElementById('btnExportExcel');
+  if (btnSave) {
+    btnSave.textContent = lang === 'ko' ? '💾 저장' : '💾 Save';
+  }
+  if (btnClear) {
+    btnClear.textContent = lang === 'ko' ? '🗑️ 초기화' : '🗑️ Clear';
+  }
+  if (btnExport) {
+    btnExport.textContent = lang === 'ko' ? '📥 엑셀 내보내기' : '📥 Export Excel';
   }
 
   document.documentElement.lang = lang === 'ko' ? 'ko' : 'en';

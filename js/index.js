@@ -156,7 +156,7 @@ function processData(data) {
       textEl.textContent = window.SvgI18n
         ? window.SvgI18n.translateStatus(
             isAlarm ? 'Alarm' : 'Normal',
-            typeof currentLanguage !== 'undefined' ? currentLanguage : 'ko'
+            typeof currentLanguage !== 'undefined' ? currentLanguage : 'en'
           )
         : isAlarm
           ? 'Alarm'
@@ -421,7 +421,7 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('DOMContentLoaded', () => {
   waitForIframe(() => {
     if (window.SvgI18n) {
-      window.SvgI18n.applySvgLanguage(typeof currentLanguage !== 'undefined' ? currentLanguage : 'ko');
+      window.SvgI18n.applySvgLanguage(typeof currentLanguage !== 'undefined' ? currentLanguage : 'en');
     }
     startMonitoring();
   });

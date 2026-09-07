@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -22,12 +22,12 @@
                 <div class="dropdown-content" id="dropdownMenu">
                     <div class="menu-item" onclick="location.href='index.html'; closeMenu();">
                         <img src="./img/dashboard.png" alt="Dashboard" />
-                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">대시보드</span>
+                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
                     </div>
                     <div class="menu-item language-toggle" onclick="toggleLanguage();">
-                        <img id="flagImg" src="./img/south-korea.png" alt="Flag" />
+                        <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
                         <span class="menu-label" id="languageLabel" data-lang-en="English"
-                            data-lang-ko="한국어">한국어</span>
+                            data-lang-ko="한국어">English</span>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
         <div class="record-container">
             <!-- Date Picker -->
             <div class="date-picker-section">
-                <label for="datePicker">Select Month:</label>
+                <label for="datePicker" data-lang-en="Select Month:" data-lang-ko="월 선택:">Select Month:</label>
                 <input type="month" id="datePicker" />
             </div>
 
@@ -141,7 +141,7 @@
                 cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
               " onclick="onClearRecord()">🗑️ Clear</button>
 
-              <button onclick="exportToExcel()" style="
+              <button id="btnExportExcel" onclick="exportToExcel()" style="
                 padding: 10px 20px; font-size: 14px; font-weight: bold;
                 background: #2196F3; color: #fff; border: none; border-radius: 8px;
                 cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -156,12 +156,12 @@
         <div class="footer-container">
             <div class="status-indicator">
                 <span class="status-label" id="statusLabel" data-lang-en="System status: "
-                    data-lang-ko="시스템 상태: ">시스템 상태:
+                    data-lang-ko="시스템 상태: ">System status:
                 </span>
                 <div class="status-light" id="status-light"></div>
             </div>
             <div class="scrolling-text">
-                <span id="alarmText">시스템 연결 정상</span>
+                <span id="alarmText">System connected normally</span>
             </div>
         </div>
     </div>

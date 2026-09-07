@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -42,12 +42,12 @@
                     <div class="menu-item" onclick="location.href='index.html'; closeMenu();"
                         style="background-color: #6e6e6e">
                         <img src="./img/dashboard.png" alt="Dashboard" />
-                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">대시보드</span>
+                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
                     </div>
                     <div class="menu-item language-toggle" onclick="toggleLanguage();">
-                        <img id="flagImg" src="./img/south-korea.png" alt="Flag" />
+                        <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
                         <span class="menu-label" id="languageLabel" data-lang-en="English"
-                            data-lang-ko="한국어">한국어</span>
+                            data-lang-ko="한국어">English</span>
                     </div>
                 </div>
             </div>
@@ -80,8 +80,11 @@
             border-bottom: 1px solid #ddd; font-family: Arial, sans-serif;
           ">
             <!-- Title (absolute center) -->
-            <span style="position:absolute; left:50%; transform:translateX(-50%); font-size: 14px; font-weight: bold; color: #333;">
-              BIỂU ĐỒ LƯỢNG NƯỚC LỌC THÔ (m3/ngày)
+            <span id="chartTitleRaw"
+                  data-lang-en="RAW FILTER WATER VOLUME CHART (m3/day)"
+                  data-lang-ko="원수 여과 수량 차트 (m3/일)"
+                  style="position:absolute; left:50%; transform:translateX(-50%); font-size: 14px; font-weight: bold; color: #333;">
+              RAW FILTER WATER VOLUME CHART (m3/day)
             </span>
             <!-- Legend + Buttons -->
             <div style="display: flex; gap: 10px; align-items: center;">
@@ -167,12 +170,12 @@
         <div class="footer-container">
             <div class="status-indicator">
                 <span class="status-label" id="statusLabel" data-lang-en="System status: "
-                    data-lang-ko="시스템 상태: ">시스템 상태:
+                    data-lang-ko="시스템 상태: ">System status:
                 </span>
                 <div class="status-light" id="status-light"></div>
             </div>
             <div class="scrolling-text">
-                <span id="alarmText">시스템 연결 정상</span>
+                <span id="alarmText">System connected normally</span>
             </div>
         </div>
     </div>
