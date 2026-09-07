@@ -1,0 +1,63 @@
+@keyframes animate {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes reanimate {
+    0% {
+        stroke-dashoffset: -1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@font-face {
+    font-family: myDigitalFont;
+    src: url(../font/digital-7\ \(mono\ italic\).ttf);
+}
+
+
+#path43684,
+#path37830,
+#path71258,
+#path71258,
+#path64674,
+#path64131,
+#path44623,
+#path44625,
+#path66525,
+#path61440,
+#path94838,
+#path94698,
+#path113804,
+#path113780,
+#path112804,
+#path113140,
+#path113792,
+#path113798,
+#path113800,
+#path81882,
+#path86957,
+#path113802,
+#path81880,
+#path86963,
+#path605784
+{
+    animation: animate 40s linear infinite;
+}
+
+@keyframes fanRotate {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+
