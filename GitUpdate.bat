@@ -28,13 +28,23 @@ git commit -m "%MSG%"
 if errorlevel 1 goto :LOI
 
 :PUSH
-rem ---- 4. Day len GitHub ----
+rem ---- 4. Day len GitHub (tu dong thu lai 5 lan khi mang chap chon) ----
 echo.
-echo  Dang day len GitHub...
+set /a TRY=0
+
+:RETRY_PUSH
+set /a TRY+=1
+echo  Dang day len GitHub (lan %TRY%/5)...
 echo  (Neu cua so dang nhap GitHub hien ra, dang nhap account SonnguyenSynopex)
 git push
-if errorlevel 1 goto :LOI
+if not errorlevel 1 goto :PUSH_OK
+if %TRY% geq 5 goto :LOI
+echo  Mang loi ket noi - thu lai sau 4 giay...
+timeout /t 4 /nobreak >nul
+goto :RETRY_PUSH
 
+:PUSH_OK
+echo  Da day xong.
 echo.
 echo  ==============================================
 echo    THANH CONG! Da cap nhat len GitHub.

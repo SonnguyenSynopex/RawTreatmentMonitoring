@@ -82,7 +82,7 @@
 #path2012,
 #path1
 {
-    animation: animate 200s linear infinite;
+    animation: animate 133.333s linear infinite;
     visibility: hidden;
 }
 
@@ -113,7 +113,7 @@
 #path2052,
 #path2053
 {
-    animation: reanimate 200s linear infinite;
+    animation: reanimate 133.333s linear infinite;
     visibility: hidden;
 }
 

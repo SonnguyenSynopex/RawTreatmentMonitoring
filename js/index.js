@@ -4,7 +4,7 @@ function controlPump(iframeDoc, pumpId, isRunning) {
 
   if (isRunning) {
     pumpElement.style.fill = '#00FF00';
-    pumpElement.style.animation = 'fanRotate 2s linear infinite';
+    pumpElement.style.animation = 'fanRotate 1.333s linear infinite';
     pumpElement.style.transformOrigin = 'center';
     pumpElement.style.transformBox = 'fill-box';
   } else {
