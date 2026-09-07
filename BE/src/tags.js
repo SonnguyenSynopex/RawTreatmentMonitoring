@@ -17,6 +17,10 @@ export const FLOAT_TAGS = [
   { tagId: 'RAWUF_HieuSuat_LocTho_LineA', unit: '%' },
   { tagId: 'RAWUF_Flow_LocTho_LineB', unit: 'm3' },
   { tagId: 'RAWUF_HieuSuat_LocTho_LineB', unit: '%' },
+  { tagId: 'RAWUF_Turbidity_input_lineA', unit: 'NTU' },
+  { tagId: 'RAWUF_Turbidity_output_lineA', unit: 'NTU' },
+  { tagId: 'RAWUF_Turbidity_input_lineB', unit: 'NTU' },
+  { tagId: 'RAWUF_Turbidity_output_lineB', unit: 'NTU' },
 ];
 
 export const BOOL_TAGS = [
@@ -67,4 +71,24 @@ export function buildTagPayload(tagId, value, ts, quality = 'good') {
     quality,
     ts,
   };
+}
+
+/** Simulated turbidity until PLC tags are live */
+export const SIMULATED_TURBIDITY = {
+  RAWUF_Turbidity_input_lineA: { min: 0.7, max: 0.95 },
+  RAWUF_Turbidity_output_lineA: { min: 0.2, max: 0.35 },
+  RAWUF_Turbidity_input_lineB: { min: 0.7, max: 0.95 },
+  RAWUF_Turbidity_output_lineB: { min: 0.2, max: 0.35 },
+};
+
+export function randomInRange(min, max) {
+  return Math.round((min + Math.random() * (max - min)) * 100) / 100;
+}
+
+/** Mutate tag map: always inject simulated turbidity values */
+export function applySimulatedTurbidity(map) {
+  for (const [tagId, range] of Object.entries(SIMULATED_TURBIDITY)) {
+    map.set(tagId, randomInRange(range.min, range.max));
+  }
+  return map;
 }

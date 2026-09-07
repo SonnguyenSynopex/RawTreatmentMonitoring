@@ -138,7 +138,9 @@ function processData(data) {
     'RAWUF_Pressure_input_A', 'RAWUF_Pressure_output_A', 'RAWUF_Hieu_suat_line_A',
     'RAWUF_Pressure_input_B', 'RAWUF_Pressure_output_B', 'RAWUF_Hieu_suat_line_B',
     'RAWUF_Flow_LocTho_LineA', 'RAWUF_HieuSuat_LocTho_LineA',
-    'RAWUF_Flow_LocTho_LineB', 'RAWUF_HieuSuat_LocTho_LineB'
+    'RAWUF_Flow_LocTho_LineB', 'RAWUF_HieuSuat_LocTho_LineB',
+    'RAWUF_Turbidity_input_lineA', 'RAWUF_Turbidity_output_lineA',
+    'RAWUF_Turbidity_input_lineB', 'RAWUF_Turbidity_output_lineB',
   ];
 
   sensorTags.forEach(tagId => {

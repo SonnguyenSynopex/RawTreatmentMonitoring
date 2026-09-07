@@ -38,6 +38,7 @@
     Alarm: { en: 'Alarm', ko: '알람' },
     'WASTE STORE TANK': { en: 'WASTE STORE TANK', ko: '폐수저장탱크' },
     Pressure: { en: 'Pressure', ko: '압력' },
+    Turbidity: { en: 'Turbidity', ko: '탁도' },
     outlet: { en: 'outlet', ko: '출구' },
     inlet: { en: 'inlet', ko: '입구' },
     'PRESSURE(Bar) - LINE A': { en: 'PRESSURE(Bar) - LINE A', ko: '압력(Bar) - 라인 A' },

@@ -4,6 +4,7 @@ import {
   ALL_TAG_IDS,
   buildTagPayload,
   normalizeTagValue,
+  applySimulatedTurbidity,
 } from '../tags.js';
 
 export class BridgeService {
@@ -71,6 +72,7 @@ export class BridgeService {
   async tickRealtime() {
     try {
       const map = await fetchRealtimeTags();
+      applySimulatedTurbidity(map);
       const ts = new Date().toISOString();
       const snapshotTags = [];
       const jobs = [];

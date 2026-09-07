@@ -121,6 +121,10 @@ Heartbeat 3–10s. LWT: `online: false`.
 | `RAWUF_HieuSuat_LocTho_LineA` | `%` | `N.NN` |
 | `RAWUF_Flow_LocTho_LineB` | `m3` | `N.NN` |
 | `RAWUF_HieuSuat_LocTho_LineB` | `%` | `N.NN` |
+| `RAWUF_Turbidity_input_lineA` | `NTU` | `N.NN` (sim 0.70–0.95) |
+| `RAWUF_Turbidity_output_lineA` | `NTU` | `N.NN` (sim 0.20–0.35) |
+| `RAWUF_Turbidity_input_lineB` | `NTU` | `N.NN` (sim 0.70–0.95) |
+| `RAWUF_Turbidity_output_lineB` | `NTU` | `N.NN` (sim 0.20–0.35) |
 
 \* API sample ghi unit `bar` cho hiệu suất line; FE vẫn dùng threshold `> 1` cho Alarm.
 
