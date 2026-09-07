@@ -40,7 +40,9 @@ export const config = {
   mqttUrl: required('MQTT_URL'),
   mqttUsername: process.env.MQTT_USERNAME || '',
   mqttPassword: process.env.MQTT_PASSWORD || '',
-  mqttClientId: process.env.MQTT_CLIENT_ID || `raw-uf-bridge-${process.pid}`,
+  // Public HiveMQ kicks duplicate clientId → offline/reconnect loop.
+  // Always suffix pid so only one logical name can still run many times safely.
+  mqttClientId: `${process.env.MQTT_CLIENT_ID || 'raw-uf-bridge'}-${process.pid}`,
 
   topicPrefix: process.env.MQTT_TOPIC_PREFIX || 'synopex/raw-uf',
   qos: /** @type {0|1|2} */ (int('MQTT_QOS', 1)),

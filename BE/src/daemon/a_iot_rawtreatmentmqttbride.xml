@@ -1,0 +1,32 @@
+<service>
+	<id>a_iot_rawtreatmentmqttbride.exe</id>
+	<name>A_IoT_RawTreatmentMqttBride</name>
+	<description>MQTT bridge Raw Treatment and UF: fetch SCADA to HiveMQ, auto start</description>
+	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<argument>--harmony</argument>
+	<argument>E:\SYNOPEX\1. PROJECT\69.WaterMonitoringPuplic\RawTreatment&amp;UF\BE\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>E:\SYNOPEX\1. PROJECT\69.WaterMonitoringPuplic\RawTreatment&amp;UF\BE\src\index.js</argument>
+	<argument>--scriptoptions=</argument>
+	<argument>--log</argument>
+	<argument>A_IoT_RawTreatmentMqttBride wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<logmode>append</logmode>
+	<logpath>E:\SYNOPEX\1. PROJECT\69.WaterMonitoringPuplic\RawTreatment&amp;UF\BE\service\logs</logpath>
+	<stoptimeout>30sec</stoptimeout>
+	<serviceaccount>
+		<domain>UTI-SON</domain>
+		<user>LocalSystem</user>
+		<password></password>
+	</serviceaccount>
+	<workingdirectory>E:\SYNOPEX\1. PROJECT\69.WaterMonitoringPuplic\RawTreatment&amp;UF\BE</workingdirectory>
+</service>

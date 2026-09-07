@@ -75,10 +75,31 @@ export class MqttPublisher {
   }
 
   publish(topic, payloadObj) {
-    if (!this.client || !this.connected) {
+    if (!this.client) {
       throw new Error('MQTT not connected');
     }
+    // During brief reconnect flaps, wait up to 5s for socket to come back
+    if (!this.connected) {
+      return new Promise((resolve, reject) => {
+        const started = Date.now();
+        const tryPub = () => {
+          if (this.connected) {
+            this._doPublish(topic, payloadObj).then(resolve, reject);
+            return;
+          }
+          if (Date.now() - started > 5000) {
+            reject(new Error('MQTT not connected'));
+            return;
+          }
+          setTimeout(tryPub, 250);
+        };
+        tryPub();
+      });
+    }
+    return this._doPublish(topic, payloadObj);
+  }
 
+  _doPublish(topic, payloadObj) {
     const payload = Buffer.from(JSON.stringify(payloadObj));
     return new Promise((resolve, reject) => {
       this.client.publish(
