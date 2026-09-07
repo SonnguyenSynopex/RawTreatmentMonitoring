@@ -6,10 +6,10 @@
  */
 window.MQTT_CONFIG = {
   enabled: true,
-  // Fallback REST khi MQTT tắt / lỗi (chỉ chạy được trên LAN)
   restFallback: true,
 
-  url: 'wss://xxxxxxxx.s1.eu.hivemq.cloud:8884/mqtt',
+  // Khớp BE/.env mqtts://broker.hivemq.com:8883
+  url: 'wss://broker.hivemq.com:8884/mqtt',
   username: '',
   password: '',
   clientIdPrefix: 'raw-uf-web',
@@ -17,6 +17,5 @@ window.MQTT_CONFIG = {
   topicPrefix: 'synopex/raw-uf',
   qos: 1,
 
-  /** Prefer snapshot topic (BE publishes all 22 tags) */
   useSnapshotAll: true,
 };

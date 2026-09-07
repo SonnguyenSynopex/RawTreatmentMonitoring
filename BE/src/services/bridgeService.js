@@ -16,6 +16,9 @@ export class BridgeService {
     this.lastRealtimeHash = '';
     this.lastHistoryHash = '';
     this.running = false;
+    /** SCADA realtime OK — drives status/online for FE footer */
+    this.lastRealtimeOk = false;
+    this.lastRealtimeAt = 0;
   }
 
   start() {
@@ -24,6 +27,9 @@ export class BridgeService {
 
     console.log(
       `[bridge] realtime=${config.realtimeIntervalMs}ms history=${config.historyIntervalMs}ms heartbeat=${config.heartbeatIntervalMs}ms`
+    );
+    console.log(
+      `[bridge] FE topics: ${config.topicPrefix}/realtime/all | .../realtime/{tagId} | .../history/{yyyy}/{MM} | .../status/online`
     );
 
     this.tickRealtime().catch((e) => console.error('[bridge] realtime init', e.message));
@@ -56,60 +62,69 @@ export class BridgeService {
   }
 
   async tickHeartbeat() {
-    await this.publisher.publishOnline(true);
+    const fresh =
+      this.lastRealtimeOk &&
+      Date.now() - this.lastRealtimeAt < config.realtimeIntervalMs * 3;
+    await this.publisher.publishOnline(fresh);
   }
 
   async tickRealtime() {
-    const map = await fetchRealtimeTags();
-    const ts = new Date().toISOString();
-    const snapshotTags = [];
-    let published = 0;
-    let missing = 0;
+    try {
+      const map = await fetchRealtimeTags();
+      const ts = new Date().toISOString();
+      const snapshotTags = [];
+      const jobs = [];
+      let published = 0;
+      let missing = 0;
 
-    for (const tagId of ALL_TAG_IDS) {
-      const raw = map.has(tagId) ? map.get(tagId) : null;
-      const value = normalizeTagValue(tagId, raw);
-
-      if (value === null) {
-        missing += 1;
-        const payload = buildTagPayload(tagId, 0, ts, 'bad');
-        if (payload) {
-          // Still publish so FE has retain value; mark quality bad when missing
-          if (payload.dataType === 'bool') payload.value = 0;
-          await this.publisher.publishTag(payload);
-          snapshotTags.push({
-            tagId: payload.tagId,
-            value: payload.value,
-            dataType: payload.dataType,
-            unit: payload.unit,
-            quality: payload.quality,
-          });
+      for (const tagId of ALL_TAG_IDS) {
+        if (!map.has(tagId)) {
+          missing += 1;
+          continue;
         }
-        continue;
+
+        const value = normalizeTagValue(tagId, map.get(tagId));
+        if (value === null) {
+          missing += 1;
+          continue;
+        }
+
+        const payload = buildTagPayload(tagId, value, ts, 'good');
+        jobs.push(this.publisher.publishTag(payload));
+        published += 1;
+        snapshotTags.push({
+          tagId: payload.tagId,
+          value: payload.value,
+          dataType: payload.dataType,
+          unit: payload.unit,
+          quality: payload.quality,
+        });
       }
 
-      const payload = buildTagPayload(tagId, value, ts, 'good');
-      await this.publisher.publishTag(payload);
-      published += 1;
-      snapshotTags.push({
-        tagId: payload.tagId,
-        value: payload.value,
-        dataType: payload.dataType,
-        unit: payload.unit,
-        quality: payload.quality,
-      });
-    }
+      if (!snapshotTags.length) {
+        this.lastRealtimeOk = false;
+        throw new Error('No matching RAWUF tags in SCADA response');
+      }
 
-    if (config.publishSnapshotAll) {
-      await this.publisher.publishSnapshot(snapshotTags, ts);
-    }
+      if (config.publishSnapshotAll) {
+        jobs.push(this.publisher.publishSnapshot(snapshotTags, ts));
+      }
 
-    const hash = JSON.stringify(snapshotTags.map((t) => [t.tagId, t.value]));
-    if (hash !== this.lastRealtimeHash) {
-      this.lastRealtimeHash = hash;
-      console.log(
-        `[bridge] realtime published=${published}/${ALL_TAG_IDS.length} missing=${missing} ts=${ts}`
-      );
+      await Promise.all(jobs);
+
+      this.lastRealtimeOk = true;
+      this.lastRealtimeAt = Date.now();
+
+      const hash = JSON.stringify(snapshotTags.map((t) => [t.tagId, t.value]));
+      if (hash !== this.lastRealtimeHash) {
+        this.lastRealtimeHash = hash;
+        console.log(
+          `[bridge] realtime published=${published}/${ALL_TAG_IDS.length} missing=${missing} ts=${ts}`
+        );
+      }
+    } catch (err) {
+      this.lastRealtimeOk = false;
+      throw err;
     }
   }
 

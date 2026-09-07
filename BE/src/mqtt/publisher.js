@@ -29,6 +29,7 @@ export class MqttPublisher {
         connectTimeout: 20_000,
         username: config.mqttUsername || undefined,
         password: config.mqttPassword || undefined,
+        protocolVersion: 4,
         will: {
           topic: topicOnline(),
           payload: Buffer.from(lwtPayload),
@@ -40,29 +41,35 @@ export class MqttPublisher {
       console.log(`[mqtt] connecting ${config.mqttUrl} as ${config.mqttClientId}`);
       this.client = mqtt.connect(config.mqttUrl, options);
 
-      const onError = (err) => {
-        console.error('[mqtt] error', err.message);
-      };
+      let settled = false;
 
-      this.client.once('connect', () => {
+      this.client.on('connect', () => {
         this.connected = true;
         console.log('[mqtt] connected');
-        resolve();
+        if (!settled) {
+          settled = true;
+          resolve();
+        }
       });
 
-      this.client.once('error', (err) => {
-        reject(err);
-      });
-
-      this.client.on('error', onError);
       this.client.on('reconnect', () => console.log('[mqtt] reconnecting...'));
+
       this.client.on('close', () => {
         this.connected = false;
         console.warn('[mqtt] connection closed');
       });
+
       this.client.on('offline', () => {
         this.connected = false;
         console.warn('[mqtt] offline');
+      });
+
+      this.client.on('error', (err) => {
+        console.error('[mqtt] error', err.message);
+        if (!settled) {
+          settled = true;
+          reject(err);
+        }
       });
     });
   }
@@ -110,7 +117,7 @@ export class MqttPublisher {
   async publishOnline(online = true) {
     await this.publish(topicOnline(), {
       systemId: SYSTEM_ID,
-      online,
+      online: !!online,
       ts: new Date().toISOString(),
     });
   }
@@ -118,7 +125,7 @@ export class MqttPublisher {
   async end() {
     if (!this.client) return;
     try {
-      await this.publishOnline(false);
+      if (this.connected) await this.publishOnline(false);
     } catch {
       /* ignore */
     }

@@ -121,6 +121,16 @@ function pad31(arr) {
 
 export async function fetchHistory(month, year) {
   const url = `${config.historyBaseUrl.replace(/\/$/, '')}/${month}/${year}`;
-  const body = await fetchJson(url);
-  return normalizeHistory(body, year, month);
+  try {
+    const body = await fetchJson(url);
+    return normalizeHistory(body, year, month);
+  } catch (err) {
+    // Empty month / not created yet — still publish zeros so FE retained topic exists
+    const msg = String(err.message || err);
+    if (msg.includes('HTTP 404') || msg.includes('HTTP 204')) {
+      console.warn(`[api] history ${month}/${year} empty (${msg})`);
+      return normalizeHistory(null, year, month);
+    }
+    throw err;
+  }
 }
