@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8" />
@@ -42,12 +42,12 @@
                     <div class="menu-item" onclick="location.href='index.html'; closeMenu();"
                         style="background-color: #6e6e6e">
                         <img src="./img/dashboard.png" alt="Dashboard" />
-                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">Dashboard</span>
+                        <span class="menu-label" data-lang-en="Dashboard" data-lang-ko="대시보드">대시보드</span>
                     </div>
                     <div class="menu-item language-toggle" onclick="toggleLanguage();">
-                        <img id="flagImg" src="./img/united-kingdom.png" alt="Flag" />
+                        <img id="flagImg" src="./img/south-korea.png" alt="Flag" />
                         <span class="menu-label" id="languageLabel" data-lang-en="English"
-                            data-lang-ko="한국어">English</span>
+                            data-lang-ko="한국어">한국어</span>
                     </div>
                 </div>
             </div>
@@ -167,12 +167,12 @@
         <div class="footer-container">
             <div class="status-indicator">
                 <span class="status-label" id="statusLabel" data-lang-en="System status: "
-                    data-lang-ko="시스템 상태: ">System status:
+                    data-lang-ko="시스템 상태: ">시스템 상태:
                 </span>
                 <div class="status-light" id="status-light"></div>
             </div>
             <div class="scrolling-text">
-                <span id="alarmText">System is normal</span>
+                <span id="alarmText">시스템 연결 정상</span>
             </div>
         </div>
     </div>
@@ -180,6 +180,7 @@
     <script src="https://unpkg.com/mqtt@5.10.4/dist/mqtt.min.js"></script>
     <script src="./js/mqtt-config.js" type="text/javascript"></script>
     <script src="./js/mqtt-client.js" type="text/javascript"></script>
+    <script src="./js/svg-i18n.js" type="text/javascript"></script>
     <script src="./js/scolling.js" type="text/javascript"></script>
     <script src="./js/time.js" type="text/javascript"></script>
     <script src="./js/chart.js" type="text/javascript"></script>

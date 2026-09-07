@@ -10,8 +10,8 @@ setTimeout(() => {
 }, 3600000);
 
 
-// Language management
-let currentLanguage = 'en'; // Default language
+// Language management — default Korean
+let currentLanguage = 'ko';
 let menuTimeout = null;
 
 // Hàm toggle dropdown menu chính
@@ -142,6 +142,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (iframeDoc) {
           iframeDoc.addEventListener('click', closeDropdownAndSubmenus);
         }
+        if (window.SvgI18n) {
+          window.SvgI18n.applySvgLanguage(currentLanguage);
+        }
       } catch (e) {
         // Cross-origin iframe
       }
@@ -229,6 +232,24 @@ function applyLanguage(lang) {
       option.textContent = langText;
     }
   });
+
+  // Sync language flag + label (current language)
+  const flagImg = document.getElementById('flagImg');
+  const languageLabel = document.getElementById('languageLabel');
+  if (lang === 'ko') {
+    if (flagImg) flagImg.src = './img/south-korea.png';
+    if (languageLabel) languageLabel.textContent = '한국어';
+  } else {
+    if (flagImg) flagImg.src = './img/united-kingdom.png';
+    if (languageLabel) languageLabel.textContent = 'English';
+  }
+
+  // SVG labels inside dashboard iframe
+  if (window.SvgI18n) {
+    window.SvgI18n.applySvgLanguage(lang);
+  }
+
+  document.documentElement.lang = lang === 'ko' ? 'ko' : 'en';
 }
 
 // Server connection checking — MQTT online topic, fallback REST

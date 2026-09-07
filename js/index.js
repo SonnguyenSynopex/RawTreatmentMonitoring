@@ -35,7 +35,7 @@ let fetchInterval = null;
 let usingMqtt = false;
 
 /**
- * Lấy iframe document
+ * Láº¥y iframe document
  */
 function getIframeDocument() {
   const iframe = document.getElementById('left-wapper');
@@ -48,7 +48,7 @@ function getIframeDocument() {
 }
 
 /**
- * Chờ iframe load xong
+ * Chá» iframe load xong
  */
 function waitForIframe(callback) {
   const iframe = document.getElementById('left-wapper');
@@ -86,7 +86,7 @@ function ensureStatusBlinkStyle(iframeDoc) {
 }
 
 /**
- * Helper: lấy giá trị tag theo tagId
+ * Helper: láº¥y giÃ¡ trá»‹ tag theo tagId
  */
 function getTagValue(tags, tagId) {
   const tag = tags.find(t => t.tagId === tagId);
@@ -94,7 +94,7 @@ function getTagValue(tags, tagId) {
 }
 
 /**
- * Fetch data từ API
+ * Fetch data tá»« API
  */
 async function fetchData() {
   try {
@@ -108,7 +108,7 @@ async function fetchData() {
 }
 
 /**
- * Xử lý data và cập nhật SVG
+ * Xá»­ lÃ½ data vÃ  cáº­p nháº­t SVG
  */
 function processData(data) {
   if (!data || !data.data || !data.data.tags) return;
@@ -128,7 +128,7 @@ function processData(data) {
 
   // --- Text displays ---
   const phanTram = getTagValue(tags, 'RAWUF_Phan_tram_be_UF');
-  if (phanTram !== null) setText('RAWUF_Phan_tram_be_UF', (phanTram).toFixed(1) + '%');
+  if (phanTram !== null) setText('RAWUF_Phan_tram_be_UF', Math.round(phanTram) + '%');
 
   const mucUF = getTagValue(tags, 'RAWUF_Muc_UF');
   if (mucUF !== null) setText('RAWUF_Muc_UF', (mucUF).toFixed(2) + ' m3');
@@ -146,14 +146,21 @@ function processData(data) {
     if (val !== null) setText(tagId, val.toFixed(2));
   });
 
-  // Line A/B status: 0-1 Normal, 1-3 Alarm (dựa trên hiệu suất)
+  // Line A/B status: 0-1 Normal, 1-3 Alarm (dá»±a trÃªn hiá»‡u suáº¥t)
   function setLineStatus(line, value) {
     if (value === null || value === undefined) return;
     const isAlarm = value > 1;
     const textEl = iframeDoc.getElementById(`textLine${line}Status`);
     const rectEl = iframeDoc.getElementById(`rectLine${line}Status`);
     if (textEl) {
-      textEl.textContent = isAlarm ? 'Alarm' : 'Normal';
+      textEl.textContent = window.SvgI18n
+        ? window.SvgI18n.translateStatus(
+            isAlarm ? 'Alarm' : 'Normal',
+            typeof currentLanguage !== 'undefined' ? currentLanguage : 'ko'
+          )
+        : isAlarm
+          ? 'Alarm'
+          : 'Normal';
       textEl.style.fill = '#ffffff';
       textEl.classList.toggle('line-status-blink', isAlarm);
       if (!isAlarm) textEl.style.opacity = '1';
@@ -255,19 +262,19 @@ function processData(data) {
     setVisible(`off-van-${i}`, !bwUfPumpB);
   });
 
-  // Paths riêng từng bơm (không tính phần chung của cụm)
+  // Paths riÃªng tá»«ng bÆ¡m (khÃ´ng tÃ­nh pháº§n chung cá»§a cá»¥m)
   const pumpC_paths = ['path1966', 'path2025'];
   const pumpA_paths = ['path1967', 'path2026'];
   const bwPumpB_paths = ['path1968', 'path2027', 'path2030'];
   const bwPumpA_paths = ['path1969', 'path2028', 'path2029'];
 
-  // Paths chung của cụm bơm C & BW B
+  // Paths chung cá»§a cá»¥m bÆ¡m C & BW B
   const groupC_paths = ['path1977', 'path1970', 'path1978', 'path1979'];
 
-  // Paths chung của cụm bơm A & BW A
+  // Paths chung cá»§a cá»¥m bÆ¡m A & BW A
   const groupA_paths = ['path1972', 'path1973', 'path1974', 'path1975', 'path1976'];
 
-  // Paths dùng chung toàn hệ thống
+  // Paths dÃ¹ng chung toÃ n há»‡ thá»‘ng
   const shared_paths = [
     'path1','path1980', 'path1981',
     ...pathRange('path', 1982, 1991),
@@ -287,50 +294,50 @@ function processData(data) {
 
   shared_paths.forEach(id => setVisible(id, any_active));
 
-  // Ghi đè logic cho RAWUF_BW_UF_PumpA
+  // Ghi Ä‘Ã¨ logic cho RAWUF_BW_UF_PumpA
   if (bwUfPumpA) {
-    // Cố tình đóng van 18, 19
+    // Cá»‘ tÃ¬nh Ä‘Ã³ng van 18, 19
     setVisible('on-van-18', false);
     setVisible('off-van-18', true);
     setVisible('on-van-19', false);
     setVisible('off-van-19', true);
 
-    // Tắt các đường nước dùng chung do bơm này không chảy qua
+    // Táº¯t cÃ¡c Ä‘Æ°á»ng nÆ°á»›c dÃ¹ng chung do bÆ¡m nÃ y khÃ´ng cháº£y qua
     setVisible('path2013', false);
     pathRange('path', 2014, 2023).forEach(id => setVisible(id, false));
     setVisible('path1981', false);
     pathRange('path', 1982, 1991).forEach(id => setVisible(id, false));
   } else {
-    // Mặc định hoặc logic cho bơm khác (nếu không mở bơm A thì van này đóng, hoặc mở khi cần)
-    // Tôi sẽ set về trạng thái đóng an toàn khi bơm không chạy, nếu có yêu cầu mở lúc tắt bơm báo tôi chỉnh lại nhé.
+    // Máº·c Ä‘á»‹nh hoáº·c logic cho bÆ¡m khÃ¡c (náº¿u khÃ´ng má»Ÿ bÆ¡m A thÃ¬ van nÃ y Ä‘Ã³ng, hoáº·c má»Ÿ khi cáº§n)
+    // TÃ´i sáº½ set vá» tráº¡ng thÃ¡i Ä‘Ã³ng an toÃ n khi bÆ¡m khÃ´ng cháº¡y, náº¿u cÃ³ yÃªu cáº§u má»Ÿ lÃºc táº¯t bÆ¡m bÃ¡o tÃ´i chá»‰nh láº¡i nhÃ©.
     setVisible('on-van-18', false);
     setVisible('off-van-18', true);
     setVisible('on-van-19', false);
     setVisible('off-van-19', true);
   }
 
-  // Ghi đè logic cho RAWUF_BW_UF_PumpB
+  // Ghi Ä‘Ã¨ logic cho RAWUF_BW_UF_PumpB
   if (bwUfPumpB) {
-    // Cố tình đóng van 17, 20
+    // Cá»‘ tÃ¬nh Ä‘Ã³ng van 17, 20
     setVisible('on-van-17', false);
     setVisible('off-van-17', true);
     setVisible('on-van-20', false);
     setVisible('off-van-20', true);
 
-    // Tắt các đường nước dùng chung do bơm này không chảy qua
+    // Táº¯t cÃ¡c Ä‘Æ°á»ng nÆ°á»›c dÃ¹ng chung do bÆ¡m nÃ y khÃ´ng cháº£y qua
     setVisible('path1', false);
     pathRange('path', 1992, 2001).forEach(id => setVisible(id, false));
     setVisible('path2002', false);
     pathRange('path', 2003, 2012).forEach(id => setVisible(id, false));
   } else {
-    // Mặc định set về trạng thái đóng an toàn khi bơm không chạy
+    // Máº·c Ä‘á»‹nh set vá» tráº¡ng thÃ¡i Ä‘Ã³ng an toÃ n khi bÆ¡m khÃ´ng cháº¡y
     setVisible('on-van-17', false);
     setVisible('off-van-17', true);
     setVisible('on-van-20', false);
     setVisible('off-van-20', true);
   }
 
-  // Van riêng từng bơm
+  // Van riÃªng tá»«ng bÆ¡m
   setVisible('on-van-1', pumpC); setVisible('off-van-1', !pumpC);
   setVisible('on-van-2', pumpC); setVisible('off-van-2', !pumpC);
 
@@ -345,13 +352,13 @@ function processData(data) {
   setVisible('on-van-8', bwPumpA); setVisible('off-van-8', !bwPumpA);
   setVisible('on-bsv-2', bwPumpA); setVisible('off-bsv-2', !bwPumpA);
 
-  // GroupC valves: bsv-13..21 (Chạy khi PumpC hoặc BW_PumpB chạy)
+  // GroupC valves: bsv-13..21 (Cháº¡y khi PumpC hoáº·c BW_PumpB cháº¡y)
   for (let i = 13; i <= 21; i++) {
     setVisible(`on-bsv-${i}`, groupC_active);
     setVisible(`off-bsv-${i}`, !groupC_active);
   }
 
-  // GroupA valves: bsv-4..12 (Chạy khi PumpA hoặc BW_PumpA chạy)
+  // GroupA valves: bsv-4..12 (Cháº¡y khi PumpA hoáº·c BW_PumpA cháº¡y)
   for (let i = 4; i <= 12; i++) {
     setVisible(`on-bsv-${i}`, groupA_active);
     setVisible(`off-bsv-${i}`, !groupA_active);
@@ -368,7 +375,7 @@ async function tick() {
 }
 
 /**
- * Start monitoring — ưu tiên MQTT WSS, fallback REST LAN
+ * Start monitoring â€” Æ°u tiÃªn MQTT WSS, fallback REST LAN
  */
 async function startMonitoring() {
   const mqttReady =
@@ -413,6 +420,9 @@ window.addEventListener('beforeunload', () => {
  */
 document.addEventListener('DOMContentLoaded', () => {
   waitForIframe(() => {
+    if (window.SvgI18n) {
+      window.SvgI18n.applySvgLanguage(typeof currentLanguage !== 'undefined' ? currentLanguage : 'ko');
+    }
     startMonitoring();
   });
 });
