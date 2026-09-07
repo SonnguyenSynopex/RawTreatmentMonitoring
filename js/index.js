@@ -27,11 +27,12 @@ function controlWaterLevel(iframeDoc, tankId, percentage) {
 }
 
 // ========================================
-// API Configuration
+// Data source: MQTT (Vercel) + REST fallback (LAN)
 // ========================================
 const API_URL = 'http://10.100.203.78:3456/api/data/cleaned?systemId=raw-uf';
 const FETCH_INTERVAL = 5000; // 5 seconds
 let fetchInterval = null;
+let usingMqtt = false;
 
 /**
  * Lấy iframe document
@@ -358,17 +359,43 @@ function processData(data) {
 }
 
 /**
- * Main tick
+ * Main tick (REST fallback only)
  */
 async function tick() {
+  if (usingMqtt) return;
   const data = await fetchData();
   if (data) processData(data);
 }
 
 /**
- * Start monitoring
+ * Start monitoring — ưu tiên MQTT WSS, fallback REST LAN
  */
-function startMonitoring() {
+async function startMonitoring() {
+  const mqttReady =
+    window.RawUfMqtt &&
+    window.MQTT_CONFIG &&
+    window.MQTT_CONFIG.enabled !== false;
+
+  if (mqttReady) {
+    try {
+      await window.RawUfMqtt.connect();
+      usingMqtt = true;
+      window.RawUfMqtt.onTags((envelope) => processData(envelope));
+      const cached = window.RawUfMqtt.getCachedTagsEnvelope();
+      if (cached) processData(cached);
+      console.log('[dashboard] using MQTT realtime');
+      return;
+    } catch (e) {
+      console.warn('[dashboard] MQTT failed, fallback REST:', e.message);
+      usingMqtt = false;
+    }
+  }
+
+  if (window.MQTT_CONFIG && window.MQTT_CONFIG.restFallback === false) {
+    console.error('[dashboard] no data source available');
+    return;
+  }
+
   tick();
   if (fetchInterval) clearInterval(fetchInterval);
   fetchInterval = setInterval(tick, FETCH_INTERVAL);

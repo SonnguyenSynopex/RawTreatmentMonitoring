@@ -231,39 +231,64 @@ function applyLanguage(lang) {
   });
 }
 
-// Server connection checking
-function checkServerConnection() {
+// Server connection checking — MQTT online topic, fallback REST
+function setConnectionUi(connected) {
   const statusLight = document.getElementById('status-light');
   const alarmText = document.getElementById('alarmText');
-
   if (!statusLight || !alarmText) return;
 
-  fetch("http://10.100.203.78:3456/api/tags/latest?systemId=raw-uf", {
+  if (connected) {
+    statusLight.classList.remove('disconnected');
+    statusLight.classList.add('connected');
+    alarmText.textContent =
+      currentLanguage === 'ko' ? '서버 연결 정상' : 'System connected normally';
+  } else {
+    statusLight.classList.remove('connected');
+    statusLight.classList.add('disconnected');
+    alarmText.textContent =
+      currentLanguage === 'ko' ? '서버 연결 오류' : 'Server connection error';
+  }
+}
+
+let mqttStatusBound = false;
+
+function bindMqttStatus() {
+  if (mqttStatusBound || !window.RawUfMqtt) return;
+  mqttStatusBound = true;
+  window.RawUfMqtt.onOnline((online) => setConnectionUi(!!online));
+}
+
+function checkServerConnection() {
+  const mqttReady =
+    window.RawUfMqtt &&
+    window.MQTT_CONFIG &&
+    window.MQTT_CONFIG.enabled !== false;
+
+  if (mqttReady) {
+    bindMqttStatus();
+    window.RawUfMqtt
+      .connect()
+      .then(() => setConnectionUi(true))
+      .catch(() => {
+        if (window.MQTT_CONFIG.restFallback === false) {
+          setConnectionUi(false);
+          return;
+        }
+        checkRestConnection();
+      });
+    return;
+  }
+
+  checkRestConnection();
+}
+
+function checkRestConnection() {
+  fetch('http://10.100.203.78:3456/api/tags/latest?systemId=raw-uf', {
     method: 'GET',
-    timeout: 5000
   })
     .then((response) => {
-      if (response.ok) {
-        // Connected
-        statusLight.classList.remove('disconnected');
-        statusLight.classList.add('connected');
-        if (currentLanguage === 'ko') {
-          alarmText.textContent = '서버 연결 정상';
-        } else {
-          alarmText.textContent = 'System connected normally';
-        }
-      } else {
-        throw new Error('Server error');
-      }
+      if (response.ok) setConnectionUi(true);
+      else throw new Error('Server error');
     })
-    .catch((error) => {
-      // Disconnected
-      statusLight.classList.remove('connected');
-      statusLight.classList.add('disconnected');
-      if (currentLanguage === 'ko') {
-        alarmText.textContent = '서버 연결 오류';
-      } else {
-        alarmText.textContent = 'Server connection error';
-      }
-    });
+    .catch(() => setConnectionUi(false));
 }
