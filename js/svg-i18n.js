@@ -16,6 +16,10 @@
       en: 'Iron & Manganese Removal Filter',
       ko: '철·망간 제거 탱크',
     },
+    'Iron,Manganese Removal Filter': {
+      en: 'Iron,Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
     'Iron &amp; Manganese Removal Filter': {
       en: 'Iron & Manganese Removal Filter',
       ko: '철·망간 제거 탱크',
@@ -25,7 +29,7 @@
       ko: '전처리탱크',
     },
     '철·망간 제거 탱크': {
-      en: 'Iron & Manganese Removal Filter',
+      en: 'Iron,Manganese Removal Filter',
       ko: '철·망간 제거 탱크',
     },
     'A/C FILRET A': { en: 'A/C FILRET A', ko: '활성탄필터 A' },
@@ -65,12 +69,31 @@
     'PRESSURE(Bar) - LINE B': { en: 'PRESSURE(Bar) - LINE B', ko: '압력(Bar) - 라인 B' },
   };
 
+  /** Prefer ID targeting for labels that may differ slightly in SVG text */
+  const BY_ID = {
+    'text88-8': {
+      en: 'Multi-Media Filtration Tank',
+      ko: '전처리탱크',
+    },
+    'text88-0-3': {
+      en: 'Iron,Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
+    text88: {
+      en: 'Multi-Media Filtration Tank',
+      ko: '전처리탱크',
+    },
+    'text88-0': {
+      en: 'Iron,Manganese Removal Filter',
+      ko: '철·망간 제거 탱크',
+    },
+  };
+
   const STATUS = {
     Normal: { en: 'Normal', ko: '정상' },
     Alarm: { en: 'Alarm', ko: '알람' },
   };
 
-  /** Reverse lookup: any known lang string → key */
   const lookupKey = Object.create(null);
   Object.keys(LABELS).forEach((key) => {
     lookupKey[LABELS[key].en] = key;
@@ -90,25 +113,46 @@
     return STATUS[key][lang === 'ko' ? 'ko' : 'en'];
   }
 
+  function setTextLeaf(el, value) {
+    if (!el) return;
+    const tspan = el.querySelector && el.querySelector('tspan');
+    if (tspan) {
+      const raw = tspan.textContent || '';
+      const leading = raw.match(/^\s*/)?.[0] || '';
+      const trailing = raw.match(/\s*$/)?.[0] || '';
+      tspan.textContent = leading + value + trailing;
+      return;
+    }
+    el.textContent = value;
+  }
+
+  function applyById(doc, lang) {
+    const L = lang === 'ko' ? 'ko' : 'en';
+    Object.keys(BY_ID).forEach((id) => {
+      const el = doc.getElementById(id);
+      if (!el) return;
+      setTextLeaf(el, BY_ID[id][L]);
+    });
+  }
+
   function applyToSvgDoc(doc, lang) {
     if (!doc) return;
     const L = lang === 'ko' ? 'ko' : 'en';
 
+    applyById(doc, lang);
+
     const nodes = doc.querySelectorAll('tspan, text');
     nodes.forEach((el) => {
-      // Only leaf text nodes (tspan with no child elements, or text with only text)
       if (el.children && el.children.length > 0) return;
 
       const raw = el.textContent;
       if (!raw || !raw.trim()) return;
 
-      // Keep leading spaces used for layout in some tspans
       const leading = raw.match(/^\s*/)?.[0] || '';
       const trailing = raw.match(/\s*$/)?.[0] || '';
       const core = normalize(raw);
       if (!core) return;
 
-      // Skip pure numbers / values
       if (/^[\d.\s%]+$/.test(core)) return;
       if (/^\d+(\.\d+)?\s*m3$/i.test(core)) return;
 
@@ -139,6 +183,7 @@
 
   global.SvgI18n = {
     LABELS,
+    BY_ID,
     applySvgLanguage,
     applyToSvgDoc,
     translateStatus,
